@@ -9,7 +9,7 @@ Note that images and other attributes referenced in this work are the property o
 # Datasets
 ## MS COCO
 
-(MS Coco)[http://mscoco.org/] is a dataset of common objects taken and described in context. It is used in NeuralTalk. 
+[MS Coco](http://mscoco.org/) is a dataset of common objects taken and described in context. It is used in NeuralTalk. 
 
 Just run the 
 
@@ -17,7 +17,7 @@ Just run the
 
 This script will first download original files from the website. As they are pretty big, it will then check the md5sum and restart if one has failed. 
 
-Then it will unpack them, and prepare the dataset for use by https://github.com/karpathy/neuraltalk2
+Then it will unpack them, and prepare the dataset for use by [NeuralTalk2](https://github.com/karpathy/neuraltalk2)
 
 ## im2text
 
@@ -41,7 +41,7 @@ The dataset contains a folder with ~890k images, along with a JSON file on the s
 
 ## ImageNet
 
-(ImageNet)[http://www.image-net.org/] is a project to index and categorize natural images of all sorts. It has supposedly about 14M images, with their description in English from Wordnet. 
+[ImageNet](http://www.image-net.org/) is a project to index and categorize natural images of all sorts. It has supposedly about 14M images, with their description in English from Wordnet. 
 
 I find that a large number of images are missing in this project. Apparently it is possible to get the original dataset from them if the project is non commercial, but I couldn't find how (didn't get an answer yet)
 

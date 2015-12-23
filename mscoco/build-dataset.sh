@@ -55,42 +55,42 @@ EOF
 cd ${TARGET_PATH}
 DONE=-1
 
-until [ ${DONE} -eq 0 ]; do
+# until [ ${DONE} -eq 0 ]; do
 
-	echo "Downloading files"
-	wget -qc http://msvocds.blob.core.windows.net/annotations-1-0-3/captions_train-val2014.zip & 
-	wget -qc http://msvocds.blob.core.windows.net/coco2014/train2014.zip &
-	wget -qc http://msvocds.blob.core.windows.net/coco2014/val2014.zip &
-	wget -qc http://www.robots.ox.ac.uk/~vgg/software/very_deep/caffe/VGG_ILSVRC_16_layers.caffemodel &
-	wget -qc https://gist.githubusercontent.com/ksimonyan/211839e770f7b538e2d8/raw/0067c9b32f60362c74f4c445a080beed06b07eb3/VGG_ILSVRC_16_layers_deploy.prototxt &
+# 	echo "Downloading files"
+# 	wget -qc http://msvocds.blob.core.windows.net/annotations-1-0-3/captions_train-val2014.zip & 
+# 	wget -qc http://msvocds.blob.core.windows.net/coco2014/train2014.zip &
+# 	wget -qc http://msvocds.blob.core.windows.net/coco2014/val2014.zip &
+# 	wget -qc http://www.robots.ox.ac.uk/~vgg/software/very_deep/caffe/VGG_ILSVRC_16_layers.caffemodel &
+# 	wget -qc https://gist.githubusercontent.com/ksimonyan/211839e770f7b538e2d8/raw/0067c9b32f60362c74f4c445a080beed06b07eb3/VGG_ILSVRC_16_layers_deploy.prototxt &
 
-	echo "Now waiting for all threads to end"
-	wait
-	echo "Done waiting for threads. Computing MD5SUM"
+# 	echo "Now waiting for all threads to end"
+# 	wait
+# 	echo "Done waiting for threads. Computing MD5SUM"
 
-	DONE=$(md5sum -c /tmp/md5sum.txt | grep 'FAILED' | wc -l)
-done
+# 	DONE=$(md5sum -c /tmp/md5sum.txt | grep 'FAILED' | wc -l)
+# done
 
-echo "All files downloaded"
+# echo "All files downloaded"
 
-# Build the raw JSON file
-for file in train2014.zip val2014.zip captions_train-val2014.zip
-do 
-	echo "Uncompressing ${file}"
-	unzip "${file}" && mv "${file}" /tmp/
-done
+# # Build the raw JSON file
+# for file in train2014.zip val2014.zip captions_train-val2014.zip
+# do 
+# 	echo "Uncompressing ${file}"
+# 	unzip "${file}" && mv "${file}" /tmp/
+# done
 
-# replace image with problem
-echo "Replacing MS COCO failed image by a fresh and working one"
-wget -qc https://msvocds.blob.core.windows.net/images/262993_z.jpg && \
-mv 262993_z.jpg "${TARGET_PATH}/train2014/COCO_train2014_000000167126.jpg"
+# # replace image with problem
+# echo "Replacing MS COCO failed image by a fresh and working one"
+# wget -qc https://msvocds.blob.core.windows.net/images/262993_z.jpg && \
+# mv 262993_z.jpg "${TARGET_PATH}/train2014/COCO_train2014_000000167126.jpg"
 
-# Prepare the raw files
-echo "Preparing the raw file"
-python "${MYDIR}"/00-build-raw.py \
-	--val_file "${TARGET_PATH}/annotations/captions_val2014.json" \
-	--train_file "${TARGET_PATH}/annotations/captions_train2014.json" \
-	--output_json "${TARGET_PATH}/coco_raw.json"
+# # Prepare the raw files
+# echo "Preparing the raw file"
+# python "${MYDIR}"/00-build-raw.py \
+# 	--val_file "${TARGET_PATH}/annotations/captions_val2014.json" \
+# 	--train_file "${TARGET_PATH}/annotations/captions_train2014.json" \
+# 	--output_json "${TARGET_PATH}/coco_raw.json"
 
 # Run the preparation script
 echo "preparing the H5 and JSON files for training"

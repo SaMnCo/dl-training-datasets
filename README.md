@@ -8,6 +8,13 @@ Note that images and other attributes referenced in this work are the property o
 
 # Datasets
 ## MS COCO
+### Specifications
+
+* Source: http://mscoco.org/
+* Nb Images: ~125.000
+* Size on disk: ~30GB
+
+### About the dataset
 
 [MS Coco](http://mscoco.org/) is a dataset of common objects taken and described in context. It is used in NeuralTalk. 
 
@@ -20,8 +27,15 @@ This script will first download original files from the website. As they are pre
 Then it will unpack them, and prepare the dataset for use by [NeuralTalk2](https://github.com/karpathy/neuraltalk2)
 
 ## im2text
+### Specifications
 
-This comes from the SBU dataset, that classifies about a million images a little bit like MS Coco. The main difference is that MS Coco has several captions for each image, and this one only has one. 
+* Source: http://vision.cs.stonybrook.edu/~vicente/sbucaptions/
+* Nb Images: ~900.000
+* Size on disk: ~120GB (300GB needed to download)
+
+### About the dataset
+
+This comes from the [SBU dataset](http://vision.cs.stonybrook.edu/~vicente/sbucaptions/), that classifies about a million images a little bit like MS Coco. The main difference is that MS Coco has several captions for each image, and this one only has one. 
 
 As there is a very large number of images which take time to download, there are 2 ways of downloading this. 
 
@@ -39,7 +53,18 @@ then 12 10GB files will be downloaded from Amazon S3 and rebuilt together. This 
 
 The dataset contains a folder with ~890k images, along with a JSON file on the same model as the one used by MS Coco. As a result, you can combine the 2 to get a larger set. 
 
+Notes: 
+* I didn't have a chance to run a training model yet on this set, hence I couldn't check if all images were OK. 
+* This set requires AT LEAST 300GB free on the destination hard drive
+
 ## ImageNet
+### Specifications
+
+* Source: http://www.image-net.org/
+* Nb Images: N/A
+* Size on disk: N/A
+
+### About the dataset
 
 [ImageNet](http://www.image-net.org/) is a project to index and categorize natural images of all sorts. It has supposedly about 14M images, with their description in English from Wordnet. 
 

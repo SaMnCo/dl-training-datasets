@@ -7,6 +7,22 @@
 # Global variables
 TARGET_PATH="$1"
 
+cat > /tmp/md5sum.txt << EOF
+19d1fc999cee5b22536a6b4efa06ebab  im2text.aa
+48d4b6268fbd455d3875668fd2a098b2  im2text.ab
+920c548b3c6a1dd2d64b9d78e5621c15  im2text.ac
+11e87d92b7bf649031daf60972f2e328  im2text.ad
+cac05d8564fb8e48471e8b81e5a9f36b  im2text.ae
+dd50c189ac57aef173e3ce1125cde0b7  im2text.af
+c748cccabf17a1c0687d621a6c354b9c  im2text.ag
+2811ef56b06ad53b1bb95a5abbca115c  im2text.ah
+5473ad53d78a9ec35da0a4a8fbe30bb8  im2text.ai
+088c93d5934a1432ec351b46359d44a4  im2text.aj
+4da0fb1519d19150589286c640cc8784  im2text.ak
+93c44223d53d1694f65ac8f7da144f72  im2text.al
+f7fb3686e39415565f0d64a2ae48a98b  im2text.json.tar.gz
+EOF
+
 function ensure_cmd_or_install_package_apt() {
   local CMD=$1
   shift
@@ -41,21 +57,29 @@ echo "Creating Target folder"
 cd "${TARGET_PATH}"
 
 # Download the JSON file
-wget -qc https://s3-us-west-2.amazonaws.com/samnco-static-files/datasets/im2text.json.tar.gz & 
+DONE=-1
 
-FILES=""
-for thread in {a..l}
-do
-  wget -qc https://s3-us-west-2.amazonaws.com/samnco-static-files/datasets/im2text.a${thread} &
-  FILES="${FILES} im2text.a${thread}"
+until [ ${DONE} = 0 ]
+do 
+  FILES=""
+  for thread in {a..l}
+  do
+    wget -qc https://s3-us-west-2.amazonaws.com/samnco-static-files/datasets/im2text.a${thread} &
+    FILES="${FILES} im2text.a${thread}"
+  done
+
+  wget -qc https://s3-us-west-2.amazonaws.com/samnco-static-files/datasets/im2text.json.tar.gz & 
+
+  echo "Now waiting for all threads to end"
+  wait
+  echo "Done waiting for threads. Now checking md5sum"
+
+  DONE=$(md5sum -c /tmp/md5sum.txt | grep 'FAILED' | wc -l)
 done
-
-echo "Now waiting for all threads to end"
-wait
-echo "Done waiting for threads"
 
 echo "Combining all datasets now"
 cat ${FILES} > im2text.tar.gz
+rm ${FILES}
 
 # Uncompress files
 tar xfz m2text.json.tar.gz

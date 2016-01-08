@@ -46,6 +46,9 @@ cat > /tmp/md5sum.txt << EOF
 a3d79f5ed8d289b7a7554ce06a5782b3  ${TARGET_PATH}/val2014.zip
 441315b0ff6932dbfde97731be7ca852  ${TARGET_PATH}/VGG_ILSVRC_16_layers.caffemodel
 c70550f8203a4eaae53d7c39ef34c92d  ${TARGET_PATH}/VGG_ILSVRC_16_layers_deploy.prototxt
+94ebdf3dad7ca2a5b2a10c9d0ba63d14  ${TARGET_PATH}/cocotalk.h5.tar.gz 
+68fc477e92cba25a3faefed57d4b5944  ${TARGET_PATH}coco_raw.json.tar.gz
+530ba6ea54141eedf8e68f2a5224a6be  ${TARGET_PATH}cocotalk.json.tar.gz
 EOF
 
 cd ${TARGET_PATH}

@@ -20,7 +20,7 @@ c748cccabf17a1c0687d621a6c354b9c  im2text.ag
 088c93d5934a1432ec351b46359d44a4  im2text.aj
 4da0fb1519d19150589286c640cc8784  im2text.ak
 93c44223d53d1694f65ac8f7da144f72  im2text.al
-f7fb3686e39415565f0d64a2ae48a98b  im2text.json.tar.gz
+e22e89d7729989dc635cac60a7fd29fc  im2text.json.tar.gz
 EOF
 
 function ensure_cmd_or_install_package_apt() {
@@ -82,7 +82,7 @@ cat ${FILES} > im2text.tar.gz
 rm ${FILES}
 
 # Uncompress files
-tar xfz m2text.json.tar.gz
+tar xfz im2text.json.tar.gz
 tar xfz im2text.tar.gz
 
 mv im2test.a* /tmp/

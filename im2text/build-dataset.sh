@@ -5,6 +5,8 @@
 # Usage: ./build-dataset.sh <path/to/target/folder> <start_image_number> <nb_images_to_download>
 # Global variables
 TARGET_PATH="$1"
+MYNAME="$(readlink -f "$0")"
+MYDIR="$(dirname "${MYNAME}")"
 START_IMAGE=$(expr $2 + 1)
 NB_IMAGES=$3
 END_IMAGE=$(expr $2 + ${NB_IMAGES})
@@ -42,7 +44,7 @@ function download_image() {
   shift
   local OUTPUT="$1"
 
-  local CAPTION="$(sed -n ${ID}p ${TARGET_PATH}/dataset/SBU_captioned_photo_dataset_captions.txt)"
+  local CAPTION="$(sed -n ${ID}p ${TARGET_PATH}/dataset/SBU_captioned_photo_dataset_captions.txt | tr -d '\";\\')"
   local IMAGE="$(sed -n ${ID}p ${TARGET_PATH}/dataset/SBU_captioned_photo_dataset_urls.txt)"
   local FLICKR_ID="$(echo ${IMAGE} | cut -f5 -d'/' | cut -f1 -d'_')"
   local IMAGE_ID="$(printf '%012d' ${ID})"
@@ -124,14 +126,18 @@ echo "Done waiting for threads"
 
 echo "Combining all datasets now"
 [ -f "${TARGET_PATH}/${DATASET}.json" ] || echo "[]" > "${TARGET_PATH}/${DATASET}.json"
-jq -s add "${TARGET_PATH}/${DATASET}.json" "${TARGET_PATH}"/im2text.*.json > /tmp/final.json \
-  && mv /tmp/final.json "${TARGET_PATH}/${DATASET}.json"
-
-# Removing duplicates from the JSON if we had restarts
-jq '. | unique | sort_by(.id) ' im2text.json > im2text.uniq.json \
-  && mv im2text.uniq.json im2text.json
-
+jq -s add "${TARGET_PATH}/${DATASET}.json" "${TARGET_PATH}"/im2text.*.json > /tmp/final.json && \
+  jq '. | unique | sort_by(.id) ' /tmp/final.json > "${TARGET_PATH}/${DATASET}.json"
 
 echo "Removing Temporary JSON files"
 find  "${TARGET_PATH}" -name "im2text.*.json" -exec mv {} /tmp/ \;
 
+echo "preparing the H5 and JSON files for training"
+python "${MYDIR}"/01-build-h5-and-json.py  \
+  --input_json "${TARGET_PATH}/im2text.json" \
+  --num_val 20000 \
+  --num_test 20000 \
+  --images_root "${TARGET_PATH}" \
+  --word_count_threshold 5 \
+  --output_json "${TARGET_PATH}/im2texttalk.json" \
+  --output_h5 "${TARGET_PATH}/im2texttalk.h5"
